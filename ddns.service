@@ -1,0 +1,15 @@
+[Unit]
+Description=Ddns service
+
+[Service]
+Type=simple
+User=nobody
+Group=nobody
+ExecStartPre="检查外网网卡"
+ExecStart=/usr/bin/simpleddns --action ccnet --config ${CONFIGFILE} --pidfile /run/seafile/ccnet-server.pid -t 5
+TimeoutStartSec=65s
+TimeoutStopSec=30
+
+
+[Install]
+WantedBy=multi-user.target
