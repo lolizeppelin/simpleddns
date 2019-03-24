@@ -57,9 +57,7 @@ class addresBase(object):
 
     @property
     def modified(self):
-        if self._ipaddr is not None:
-            return self._ipaddr == self._lastaddr
-        return False
+        return self.ipaddr == self._lastaddr
 
     def flush(self):
         if self._ipaddr and self.modified:
