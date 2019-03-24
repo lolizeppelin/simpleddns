@@ -4,7 +4,7 @@ Description=Ddns service
 [Service]
 Type=simple
 StateDirectory=simpleddns
-ExecStart=/usr/bin/simpleddns
+ExecStart=/usr/sbin/ddns-notify
 TimeoutStartSec=65s
 TimeoutStopSec=30
 
