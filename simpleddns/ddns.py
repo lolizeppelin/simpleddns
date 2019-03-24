@@ -61,7 +61,7 @@ class Ddns(object):
             yield
         except Exception as e:
             import logging
-            logging.error(e.message)
+            logging.error(e.message if e.message else str(e))
             sys.exit(1)
 
     def notify(self):
