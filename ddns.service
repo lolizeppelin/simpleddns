@@ -3,7 +3,7 @@ Description=Ddns service
 
 [Service]
 Type=simple
-StateDirectory=/run/simpleddns
+StateDirectory=simpleddns
 ExecStart=/usr/bin/simpleddns
 TimeoutStartSec=65s
 TimeoutStopSec=30
