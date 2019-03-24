@@ -18,7 +18,7 @@ BuildRequires:  python2 >= 2.7
 BuildRequires:  python2-setuptools >= 40
 
 Requires:       python2 >= 2.7
-Requires:       rp-pppoe < 3.0
+Requires:       rp-pppoe >= 3.0
 Requires:       python2-netaddr >= 0.7.5
 
 
