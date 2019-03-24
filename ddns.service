@@ -6,7 +6,7 @@ Type=simple
 StateDirectory=simpleddns
 ExecStart=/usr/sbin/ddns-notify
 TimeoutStartSec=65s
-TimeoutStopSec=30
+TimeoutStopSec=30s
 
 
 [Install]
