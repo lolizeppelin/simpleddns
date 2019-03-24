@@ -32,7 +32,7 @@ class addresBase(object):
         self._ipaddr = None
         self._lastaddr = None
 
-        self.cfile = os.path.join(CONF.rundir, 'ipaddr')
+        self.cfile = os.path.join(CONF.datadir, 'ipaddr')
         if os.path.exists(self.cfile):
             if os.path.getsize(self.cfile) > 1024:
                 raise ValueError('ip address state file over size')
