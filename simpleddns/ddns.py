@@ -1,14 +1,44 @@
 import os
 import sys
+import signal
 import contextlib
+import threading
 from oslocfg import cfg
 
 CONF = cfg.CONF
+
+
+class SignalHandler(object):
+    """Systemd TimeoutStartSec"""
+
+    IGNORE  = frozenset(['SIG_DFL', 'SIG_IGN'])
+
+    def __init__(self):
+        self._signals_by_name = dict((name, getattr(signal, name))
+                                     for name in dir(signal)
+                                     if name.startswith("SIG")
+                                     and name not in self.IGNORE)
+
+    def handle_signal(self, handle):
+        for signame in ('SIGTERM', 'SIGHUP', 'SIGINT'):
+            signo = self._signals_by_name[signame]
+            signal.signal(signo, handle)
+
+
 
 class Ddns(object):
 
     def __init__(self):
         self.helper = None
+
+        def kill(signo, frame):
+            sys.exit(1)
+
+        SignalHandler().handle_signal(kill)
+        timer = threading.Timer(CONF.timeout, lambda : sys.exit(1))
+        timer.setDaemon(True)
+        timer.start()
+
 
     def prepare(self):
 
@@ -25,7 +55,6 @@ class Ddns(object):
         self.helper = cls()
         self.helper.getaddr()
 
-
     @contextlib.contextmanager
     def logging(self):
         try:
@@ -34,7 +63,6 @@ class Ddns(object):
             import logging
             logging.error(e.message)
             sys.exit(1)
-
 
     def notify(self):
         if self.helper.modified:
