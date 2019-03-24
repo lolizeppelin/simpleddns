@@ -46,7 +46,7 @@ class Ddns(object):
             raise ValueError('Run user error')
 
         helper = 'simpleddns.address.%s.impl' % CONF.etype
-        notifier = 'simpleddns.plugins.%s' % CONF.plugin
+        notifier = 'simpleddns.plugins.%s.impl' % CONF.plugin
         __import__(helper)
         __import__(notifier)
 
