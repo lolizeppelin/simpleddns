@@ -5,7 +5,7 @@ import json
 CONF = cfg.CONF
 
 CONF.register_cli_opts(ddns_opts)
-CONF(project='ddns', default_config_files=[r'D:\backup\etc\ddns.conf', ])
+CONF(project='ddns', default_config_files=['/etc/simpleddns/ddns.conf', ])
 
 def main():
     from simpleddns.plugins.dnspod.impl import notifyHelper

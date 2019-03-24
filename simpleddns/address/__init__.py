@@ -29,7 +29,7 @@ class addresBase(object):
 
     def __init__(self):
 
-        self._ipaddr = self.check(self.getaddr())
+        self._ipaddr = None
         self._lastaddr = None
 
         self.cfile = os.path.join(CONF.rundir, 'ipaddr')
@@ -68,7 +68,7 @@ class addresBase(object):
 
     def guess_external_ipaddr(self):
         if CONF.guess:
-            guess_ip = self.GUESSPLUGUNS[CONF.gess]()
+            guess_ip = self.GUESSPLUGUNS[CONF.guess]()
             if guess_ip:
                 return self.check(guess_ip)
         return None
