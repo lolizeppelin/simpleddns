@@ -14,12 +14,12 @@ URL:            http://github.com/Lolizeppelin/%{proj_name}
 Source0:        %{proj_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-BuildRequires:  python >= 2.7
+BuildRequires:  python2 >= 2.7
 BuildRequires:  python2-setuptools >= 40
 
-Requires:       python >= 2.7
-Requires:       python < 3.0
-Requires:       python-netaddr >= 0.7.5
+Requires:       python2 >= 2.7
+Requires:       rp-pppoe < 3.0
+Requires:       python2-netaddr >= 0.7.5
 
 
 %description
@@ -37,7 +37,7 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{proj_name}
 
-%{__install} -D -m 0644 -p etc/%{proj_name}/seafile.conf -t %{buildroot}%{_sysconfdir}/%{proj_name}
+%{__install} -D -m 0644 -p etc/%{proj_name}/ddns.conf -t %{buildroot}%{_sysconfdir}/%{proj_name}
 %{__install} -D -m 0644 -p ddns.service %{buildroot}%{_unitdir}/ddns.service
 %{__install} -D -m 0644 -p ddns.timer %{buildroot}%{_unitdir}/ddns.timer
 
@@ -51,7 +51,10 @@ done;
 
 %files
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{proj_name}/ddns.conf
 %{_sbindir}/ddns-notify
+%{_unitdir}/ddns.service
+%{_unitdir}/ddns.timer
 %{py_sitedir}/%{proj_name}/*
 %dir %{py_sitedir}/%{proj_name}-%{version}-*.egg-info/
 %{py_sitedir}/%{proj_name}-%{version}-*.egg-info/*
@@ -60,7 +63,6 @@ done;
 #%{python2_sitearch}/%{proj_name}-%{version}-*.egg-info/*
 #%dir %{python2_sitearch}/%{proj_name}-%{version}-*.egg-info/
 %doc README.rst
-%doc doc/*
 
 %changelog
 * Fri Mar 15 2019 Lolizeppelin <lolizeppelin@gmail.com> - 1.0.0
