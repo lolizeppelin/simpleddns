@@ -51,6 +51,7 @@ done;
 
 %files
 %defattr(-,root,root,-)
+%{_sbindir}/ddns-notify
 %{py_sitedir}/%{proj_name}/*
 %dir %{py_sitedir}/%{proj_name}-%{version}-*.egg-info/
 %{py_sitedir}/%{proj_name}-%{version}-*.egg-info/*
