@@ -4,7 +4,7 @@
 %define proj_name simpleddns
 %define _release 1
 
-Name:           python2-%{simpleddns}
+Name:           python2-%{proj_name}
 Version:        1.0.0
 Release:        %{_release}%{?dist}
 Summary:        ddns utils
@@ -33,30 +33,20 @@ rm -rf %{proj_name}.egg-info
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 %install
-%{__rm} -rf %{buildroot}
 %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
+
+mkdir -p %{buildroot}%{_sysconfdir}/%{proj_name}
+
+%{__install} -D -m 0644 -p etc/%{proj_name}/seafile.conf -t %{buildroot}%{_sysconfdir}/%{proj_name}
+%{__install} -D -m 0644 -p ddns.service %{buildroot}%{_unitdir}/ddns.service
+%{__install} -D -m 0644 -p ddns.timer %{buildroot}%{_unitdir}/ddns.timer
+
+for l in sbin/*;do
+    %{__install} -D -m 0755 $l -t %{buildroot}%{_sbindir}
+done;
 
 %clean
 %{__rm} -rf %{buildroot}
-
-
-%pre
-if [ "$1" = "1" ] ; then
-    getent group ddns >/dev/null || groupadd -f -g 874 -r ddns
-    if ! getent passwd ddns >/dev/null ; then
-        if ! getent passwd 874 >/dev/null ; then
-          useradd -r -u 874 -g ddns -M -s /sbin/nologin -c "Ddns server" ddns
-        else
-          useradd -r -g ddns -M -s /sbin/nologin -c "Ddns user" ddns
-        fi
-    fi
-fi
-
-
-%postun
-if [ "$1" = "0" ] ; then
-    /usr/sbin/userdel ddns > /dev/null 2>&1
-fi
 
 
 %files

@@ -1,27 +1,39 @@
 from oslocfg import cfg
-from oslocfg import types
+
+CONF = cfg.CONF
 
 ddns_opts = [
+    cfg.StrOpt('domain',
+               required=True,
+               help='Ddns domain'),
+    cfg.StrOpt('subdomain',
+               required=True,
+               help='Ddns sub domain'),
+    cfg.StrOpt('plugin',
+               default='sipleddns.plugins.dnspod',
+               help='ddns plugin'),
+    cfg.StrOpt('ethernet',
+               short='i',
+               help='External ethernet interface name'),
+    cfg.StrOpt('etype',
+               short='e',
+               choices=['dhcp', 'pppoe'],
+               default='pppoe',
+               help='External ipaddres fetch type'),
+    cfg.StrOpt('rundir',
+               default='/run/simpleddns',
+               help='External ipaddres in file'),
     cfg.IntOpt('timeout',
                short='t',
-               required=True,
-               min=5,
-               default=60,
-               max=3600,
+               min=10, max=180,
+               default=30,
                help='Ddns process Max run time'),
-    cfg.StrOpt(
-        'etype',
-        short='e',
-        default='pppoe',
-        choices=['pppoe', 'dhcp'],
-        help='External network type'),
-    cfg.IntOpt('timeout',
-               short='t',
-               required=True,
-               min=5,
-               default=60,
-               max=3600,
-               help='Ddns process Max run time'),
+    cfg.BoolOpt('force',
+               default=False,
+               help='Force update ddns server'),
+    cfg.StrOpt('guess',
+                default='udp',
+                help='Guess the external ipaddr by action'),
 ]
 
 
