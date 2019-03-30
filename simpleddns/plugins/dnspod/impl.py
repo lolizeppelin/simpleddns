@@ -27,19 +27,30 @@ class notifyHelper(notifyBase):
         self.conf = CONF[config.NAME]
 
 
-    def notify(self, ipaddr):
+    @staticmethod
+    def _check_code(result):
+        code = int(result.get('status')['code'])
+        if code != 1:
+            raise ValueError('result fail, code %d, msg %s' % (code, result.get('status')['message']))
 
+
+    def notify(self, ipaddr):
+        """
+        https://www.dnspod.cn/docs/records.html#record-modify
+        """
         params = dict(
             format='json', lang='en', record_type='A',
-            record_line_id=0,
+            record_line_id="0",
             domain=CONF.domain, sub_domain=CONF.subdomain,
+            record_id=self.conf.record_id,
             value=ipaddr,
             login_token='%d,%s' % (self.conf.id, self.conf.token)
         )
         respon = requests.post(self.conf.api + '/Record.Modify', headers=self.HEADERS,
                                data=urllib.urlencode(params), timeout=self.conf.timeout)
-        results = json.loads(respon.text)
-        return results
+        result = json.loads(respon.text)
+        self._check_code(result)
+        return result
 
 
     def infoA(self,):
@@ -52,5 +63,5 @@ class notifyHelper(notifyBase):
         respon = requests.post(self.conf.api + '/Monitor.Listsubvalue',
                                headers=self.HEADERS, data=urllib.urlencode(params),
                                timeout=self.conf.timeout)
-        results = json.loads(respon.text)
-        return results
+        result = json.loads(respon.text)
+        return result

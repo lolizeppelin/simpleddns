@@ -28,12 +28,15 @@ ddns_opts = [
                min=10, max=180,
                default=30,
                help='Ddns process Max run time'),
-    cfg.BoolOpt('force',
-               default=False,
-               help='Force update ddns server'),
     cfg.StrOpt('guess',
                 default='udp',
                 help='Guess the external ipaddr by action'),
+    cfg.BoolOpt('force',
+               default=False,
+               help='Force update ddns server'),
+    cfg.BoolOpt('logging',
+               default=False,
+               help='Logging on'),
 ]
 
 
