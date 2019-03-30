@@ -1,7 +1,8 @@
 import os
 import socket
-import fcntl
-import struct
+# import fcntl
+# import struct
+import psutil
 import netaddr
 from netaddr import IPNetwork
 
@@ -72,23 +73,35 @@ class addresBase(object):
         return None
 
     @staticmethod
-    def check(address, external=True):
+    def check(address, external=True, raise_error=True):
         if not netaddr.valid_ipv4(address, netaddr.core.INET_PTON):
-            raise ValueError("%s is not IPv4 or IPv6 address" % address)
+            if raise_error:
+                raise ValueError("%s is not IPv4 or IPv6 address" % address)
+            return None
         if external:
             for network in INTERNALS:
                 if netaddr.IPAddress(address) in network:
-                    raise ValueError('Address %s is not external address')
+                    if raise_error:
+                        raise ValueError('Address %s is not external address')
+                    return None
         return address
 
     @staticmethod
     def _address_of_physical_interface(ifname):
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        return socket.inet_ntoa(fcntl.ioctl(
-            s.fileno(),
-            0x8915,  # SIOCGIFADDR
-            struct.pack('256s', ifname[:15])
-        )[20:24])
+        if ifname == 'lo':
+            raise ValueError('Do not get addr from loopback interface')
+        interfaces = psutil.net_if_addrs()
+        if ifname not in interfaces:
+            raise ValueError('No interface named %s' % ifname)
+        address = [ addr.address for addr in interfaces[ifname] if addr.family == 2 ]
+        return address
+
+        # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # return socket.inet_ntoa(fcntl.ioctl(
+        #     s.fileno(),
+        #     0x8915,  # SIOCGIFADDR
+        #     struct.pack('256s', ifname[:15])
+        # )[20:24])
 
     @staticmethod
     def _guess_external_ipaddr_by_udp():
