@@ -38,6 +38,7 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
 mkdir -p %{buildroot}%{_sysconfdir}/%{proj_name}
+mkdir -p %{buildroot}%{_sharedstatedir}/%{proj_name}
 
 %{__install} -D -m 0640 -p etc/%{proj_name}/ddns.conf -t %{buildroot}%{_sysconfdir}/%{proj_name}
 %{__install} -D -m 0644 -p ddns.service %{buildroot}%{_unitdir}/ddns.service
@@ -86,6 +87,8 @@ fi
 #%{python2_sitearch}/%{proj_name}-%{version}-*.egg-info/*
 #%dir %{python2_sitearch}/%{proj_name}-%{version}-*.egg-info/
 %doc README.rst
+%defattr(-,ddns,ddns,-)
+%dir %{_sharedstatedir}/%{proj_name}
 
 %changelog
 * Fri Mar 15 2019 Lolizeppelin <lolizeppelin@gmail.com> - 1.0.0
