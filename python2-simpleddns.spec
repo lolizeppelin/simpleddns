@@ -2,7 +2,7 @@
 
 %global debug_package %{nil}
 %define proj_name simpleddns
-%define _release 11
+%define _release 12
 
 Name:           python2-%{proj_name}
 Version:        1.0.0
