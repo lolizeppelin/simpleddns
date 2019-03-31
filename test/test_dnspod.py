@@ -10,8 +10,9 @@ CONF(project='ddns', default_config_files=['/etc/simpleddns/ddns.conf', ])
 def main():
     from simpleddns.plugins.dnspod.impl import notifyHelper
     notifier = notifyHelper()
-    data = notifier.infoA()
-    print json.dumps(data, indent=4)
+    print json.dumps(notifier.infoD(), indent=4)
+    print '------------------------------------'
+    print json.dumps(notifier.infoA(), indent=4)
 
 
 if __name__ == '__main__':

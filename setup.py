@@ -19,6 +19,7 @@ setup(
     # kombu>=3.0.25否则timeout参数有问题
     install_requires=('netaddr>=0.7.5',
                       'psutil>=5.0',
+                      'requests>=2.2',
                       'six>=1.9.0'),
     name='simpleddns',
     version=__version__,

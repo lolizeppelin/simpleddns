@@ -21,6 +21,7 @@ Requires:       python2 >= 2.7
 Requires:       rp-pppoe >= 3.0
 Requires:       python2-netaddr >= 0.7.5
 Requires:       python2-psutil >= 5.0
+Requires:       python2-requests >= 2.2
 
 
 %description

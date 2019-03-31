@@ -19,10 +19,6 @@ class notifyHelper(notifyBase):
         "User-Agent": "python2-simpleddns/1.0.0 (lolizeppelin@gmail.com)"
     }
 
-    BASEPARAMS = {
-
-    }
-
     def __init__(self):
         self.conf = CONF[config.NAME]
 
@@ -36,8 +32,10 @@ class notifyHelper(notifyBase):
 
     def notify(self, ipaddr):
         """
-        https://www.dnspod.cn/docs/records.html#record-modify
+        https://www.dnspod.cn/docs/records.html#dns
         """
+        if ipaddr == self.infoA()['record']['value']:
+            return None
         params = dict(
             format='json', lang='en', record_type='A',
             record_line_id="0",
@@ -46,21 +44,36 @@ class notifyHelper(notifyBase):
             value=ipaddr,
             login_token='%d,%s' % (self.conf.id, self.conf.token)
         )
-        respon = requests.post(self.conf.api + '/Record.Modify', headers=self.HEADERS,
+        respon = requests.post(self.conf.api + '/Record.Ddns', headers=self.HEADERS,
                                data=urllib.urlencode(params), timeout=self.conf.timeout)
         result = json.loads(respon.text)
         self._check_code(result)
         return result
 
 
-    def infoA(self,):
+    def infoA(self):
         params = dict(
             format='json', lang='en',
+            domain=CONF.domain, record_id=self.conf.record_id,
+            login_token='%d,%s' % (self.conf.id, self.conf.token)
+        )
+
+        respon = requests.post(self.conf.api + '/Record.Info',
+                               headers=self.HEADERS, data=urllib.urlencode(params),
+                               timeout=self.conf.timeout)
+        result = json.loads(respon.text)
+        self._check_code(result)
+        return result
+
+
+    def infoD(self):
+        params = dict(
+            format='json', lang='en', record_type='A', record_line_id="0",
             domain=CONF.domain, sub_domain=CONF.subdomain,
             login_token='%d,%s' % (self.conf.id, self.conf.token)
         )
 
-        respon = requests.post(self.conf.api + '/Monitor.Listsubvalue',
+        respon = requests.post(self.conf.api + '/Record.List',
                                headers=self.HEADERS, data=urllib.urlencode(params),
                                timeout=self.conf.timeout)
         result = json.loads(respon.text)
