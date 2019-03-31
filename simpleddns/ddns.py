@@ -42,8 +42,8 @@ class Ddns(object):
 
     def prepare(self):
 
-        if os.getuid() != 0:
-            raise ValueError('Run user error')
+        if os.getuid() == 0:
+            raise ValueError('Run user error, no root')
 
         helper = 'simpleddns.address.%s.impl' % CONF.etype
         notifier = 'simpleddns.plugins.%s.impl' % CONF.plugin
