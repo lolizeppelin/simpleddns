@@ -3,7 +3,8 @@ Description=Ddns service timer
 After=network.target
 
 [Timer]
-OnUnitActiveSec=5m
+OnActiveSec=1m
+OnUnitInactiveSec=5m
 AccuracySec=10s
 Unit=ddns.service
 
