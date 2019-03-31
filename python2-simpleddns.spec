@@ -75,7 +75,6 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{proj_name}/ddns.conf
 %{_bindir}/ddns-notify
 %{_unitdir}/ddns.service
 %{_unitdir}/ddns.timer
@@ -89,6 +88,7 @@ fi
 %doc README.rst
 %defattr(-,ddns,ddns,-)
 %dir %{_sharedstatedir}/%{proj_name}
+%config(noreplace) %{_sysconfdir}/%{proj_name}/ddns.conf
 
 %changelog
 * Fri Mar 15 2019 Lolizeppelin <lolizeppelin@gmail.com> - 1.0.0
