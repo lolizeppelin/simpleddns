@@ -11,6 +11,7 @@ opts = [
     cfg.IntOpt('id',
                help='Dnspod api token id'),
     cfg.StrOpt('token',
+               secret=True,
                help='Dnspod api token'),
     cfg.IntOpt('record_id',
                help='Sub domain record id on dnspod'),
