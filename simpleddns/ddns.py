@@ -71,5 +71,11 @@ class Ddns(object):
             notifier = sys.modules[notifier]
             cls = getattr(notifier, 'notifyHelper')
             notifier = cls()
-            notifier.notify(self.helper.ipaddr)
+            resut = notifier.notify(self.helper.ipaddr)
             self.helper.flush()
+            if CONF.loging:
+                import logging
+                if resut:
+                    logging.info("success update ipaddr")
+                else:
+                    logging.info("succes but do nothing")
