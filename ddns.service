@@ -7,7 +7,7 @@ StateDirectory=simpleddns
 User=ddns
 Group=ddns
 ExecStart=/usr/bin/ddns-notify
-TimeoutStartSec=65s
+RuntimeMaxSec=65s
 
 
 [Install]
